@@ -2,9 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:tieng_trung_123/auth/profile_screen.dart';
 import 'package:tieng_trung_123/auth/splash_screen.dart';
 import 'package:tieng_trung_123/routes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import 'auth/test_bottom_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,9 +38,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData.light(),
-      home: const SplashScreen(),
       onGenerateRoute: mainRoute,
-      // initialRoute: SplashScreen.route,
+      initialRoute: ProfileScreen.route,
     );
   }
 }

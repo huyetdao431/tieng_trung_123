@@ -137,6 +137,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             TextFormField(
                               controller: firstName,
                               focusNode: _firstNameFocusNode,
+                              style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: AppColors.neutral_200, width: 2),
@@ -173,6 +174,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             TextFormField(
                               controller: lastName,
                               focusNode: _lastNameFocusNode,
+                              style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: AppColors.neutral_200, width: 2),
@@ -210,6 +212,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               controller: email,
                               focusNode: _emailFocusNode,
                               keyboardType: TextInputType.emailAddress,
+                              style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: AppColors.neutral_200, width: 2),
@@ -314,6 +317,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                             onChanged: (value) {
                                               state.didChange(value);
                                             },
+                                            style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                                             decoration: InputDecoration(
                                               enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(color: state.hasError ? AppColors.red_500 : AppColors.neutral_200, width: 2),
@@ -360,6 +364,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               controller: password,
                               focusNode: _passwordFocusNode,
                               keyboardType: TextInputType.emailAddress,
+                              style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: AppColors.neutral_200, width: 2),

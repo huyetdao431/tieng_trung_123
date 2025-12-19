@@ -175,6 +175,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                       controller: email,
                       focusNode: _emailFocusNode,
                       keyboardType: TextInputType.emailAddress,
+                      style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                       decoration: InputDecoration(
                         label: hintText('Email'),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -406,6 +407,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                   TextFormField(
                     controller: password,
                     focusNode: _passwordFocusNode,
+                    style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                     decoration: InputDecoration(
                       label: hintText('Nhập mật khẩu mới'),
                       floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -449,6 +451,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                   TextFormField(
                     controller: rePassword,
                     focusNode: _rePasswordFocusNode,
+                    style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                     decoration: InputDecoration(
                       label: hintText('Nhập lại mật khẩu mới'),
                       floatingLabelBehavior: FloatingLabelBehavior.never,

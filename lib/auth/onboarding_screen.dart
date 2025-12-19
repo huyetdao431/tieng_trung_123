@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tieng_trung_123/auth/profile_screen.dart';
 import 'package:tieng_trung_123/core/colors.dart';
 import 'package:tieng_trung_123/models/onboarding_question.dart';
 import 'package:tieng_trung_123/services/providers/auth_provider/auth_provider.dart';
@@ -75,8 +76,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> with Ticker
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
-              onPressed: () async {
-                await ref.read(authNotifierProvider.notifier).logout();
+              onPressed: () {
+                // await ref.read(authNotifierProvider.notifier).logout();
+                Navigator.of(context).pushNamed(ProfileScreen.route);
               },
               color: AppColors.neutral_400,
               style: IconButton.styleFrom(backgroundColor: AppColors.neutral_200),
@@ -196,6 +198,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> with Ticker
                       });
                       if (_currentPageIndex < 4) {
                         _pageController.animateToPage(_currentPageIndex, duration: Duration(milliseconds: 200), curve: Curves.ease);
+                      } else {
+                        Navigator.of(context).pushNamed(ProfileScreen.route);
                       }
                       print(_currentPageIndex == 4 ? 'start $selectedAnswerIndex' : 'continue');
                     },

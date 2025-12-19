@@ -122,6 +122,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 controller: email,
                                 focusNode: _emailFocusNode,
                                 keyboardType: TextInputType.emailAddress,
+                                style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                                 decoration: InputDecoration(
                                   label: hintText('Email'),
                                   floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -164,6 +165,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 controller: password,
                                 focusNode: _passwordFocusNode,
                                 keyboardType: TextInputType.emailAddress,
+                                style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w400),
                                 decoration: InputDecoration(
                                   label: hintText('Mật khẩu'),
                                   floatingLabelBehavior: FloatingLabelBehavior.never,
