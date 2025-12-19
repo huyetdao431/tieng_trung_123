@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tieng_trung_123/core/colors.dart';
 import 'package:tieng_trung_123/models/onboarding_question.dart';
+import 'package:tieng_trung_123/services/providers/auth_provider/auth_provider.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   static const String route = 'OnboardingScreen';
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> with TickerProviderStateMixin {
   List<OnboardingQuestion> questions = [
     OnboardingQuestion(
       id: '1',
@@ -32,112 +34,184 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ),
   ];
   List<int> selectedAnswerIndex = [-1, -1, -1, -1, -1];
-  int currentQuestion = 1;
+  late PageController _pageController;
+  late TabController _tabController;
+  int _currentPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _tabController = TabController(length: 5, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
+    bool isLoading = authState.isLoading;
+    ref.listen(authNotifierProvider, (previous, next) {
+      if (next.hasError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${next.error}', style: TextStyle(color: AppColors.neutral_0)),
+            backgroundColor: AppColors.red_500,
+          ),
+        );
+      }
+    });
+
     var screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: IconButton(onPressed: () {}, icon: Icon(Icons.close)),
+            child: IconButton(
+              onPressed: () async {
+                await ref.read(authNotifierProvider.notifier).logout();
+              },
+              color: AppColors.neutral_400,
+              style: IconButton.styleFrom(backgroundColor: AppColors.neutral_200),
+              icon: Icon(Icons.close),
+            ),
           ),
         ],
-        title: Text('$currentQuestion/5'),
+        title: Text.rich(
+          TextSpan(
+            text: '${_currentPageIndex + 1}',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.primary_500),
+            children: [
+              TextSpan(
+                text: '/5',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.neutral_300),
+              ),
+            ],
+          ),
+        ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Stack(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        child: Column(
           children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Column(
+            SizedBox(
+              height: 16,
+              child: Stack(
                 children: [
-                  SizedBox(
-                    height: 16,
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(color: AppColors.secondary_100, borderRadius: BorderRadius.circular(16)),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            width: (screenSize.width - 40) / 5 * currentQuestion,
-                            decoration: BoxDecoration(color: AppColors.secondary_500, borderRadius: BorderRadius.circular(16)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 32),
-                    child: Text(questions[currentQuestion - 1].question, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                    decoration: BoxDecoration(color: AppColors.secondary_100, borderRadius: BorderRadius.circular(16)),
                   ),
-                  for (var index = 0; index < questions[currentQuestion - 1].answers.length; index++)
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedAnswerIndex[currentQuestion - 1] = selectedAnswerIndex[currentQuestion - 1] == index ? -1 : index;
-                            });
-                          },
-                          child: selectedAnswerIndex[currentQuestion - 1] != index
-                              ? Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: AppColors.neutral_200, width: 1),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Text(questions[currentQuestion - 1].answers[index], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                                )
-                              : Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.secondary_100,
-                                    border: Border.all(color: AppColors.secondary_500, width: 1),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Text(questions[currentQuestion - 1].answers[index], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                                ),
-                        ),
-                        const SizedBox(height: 18),
-                      ],
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      width: (screenSize.width - 40) / 5 * (_currentPageIndex + 1),
+                      decoration: BoxDecoration(color: AppColors.secondary_500, borderRadius: BorderRadius.circular(16)),
                     ),
+                  ),
                 ],
               ),
             ),
-            Positioned(
-              bottom: 50,
-              left: 0,
-              right: 0,
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                    currentQuestion += currentQuestion < 5 ? 1 : 0;
-                  });
-                  print(currentQuestion == 5 ? 'start $selectedAnswerIndex' : 'continue');
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 32),
+                        child: Text(questions[index].question, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                      ),
+                      for (var idx = 0; idx < questions[index].answers.length; idx++)
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedAnswerIndex[index] = selectedAnswerIndex[index] == idx ? -1 : idx;
+                                });
+                              },
+                              child: selectedAnswerIndex[index] != idx
+                                  ? Container(
+                                      width: double.infinity,
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: AppColors.neutral_200, width: 1),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Text(questions[index].answers[idx], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                                    )
+                                  : Container(
+                                      width: double.infinity,
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.secondary_100,
+                                        border: Border.all(color: AppColors.secondary_500, width: 1),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Text(questions[index].answers[idx], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                                    ),
+                            ),
+                            const SizedBox(height: 18),
+                          ],
+                        ),
+                    ],
+                  );
                 },
-                child: Container(
-                  height: 64,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(32), color: Colors.green),
-                  child: Text(
-                    currentQuestion == 5 ? 'Bắt đầu' : 'Tiếp tục',
-                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
+              ),
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _currentPageIndex = _currentPageIndex > 0 ? _currentPageIndex - 1 : 0;
+                      });
+                      _pageController.animateToPage(_currentPageIndex, duration: Duration(milliseconds: 200), curve: Curves.ease);
+                    },
+                    iconSize: 24,
+                    color: AppColors.neutral_400,
+                    style: IconButton.styleFrom(backgroundColor: AppColors.neutral_200),
+                    icon: Icon(Icons.arrow_back),
                   ),
                 ),
-              ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        _currentPageIndex += _currentPageIndex < 4 ? 1 : 0;
+                      });
+                      if (_currentPageIndex < 4) {
+                        _pageController.animateToPage(_currentPageIndex, duration: Duration(milliseconds: 200), curve: Curves.ease);
+                      }
+                      print(_currentPageIndex == 4 ? 'start $selectedAnswerIndex' : 'continue');
+                    },
+
+                    child: Container(
+                      height: 48,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(32), color: Colors.green),
+                      child: Text(
+                        _currentPageIndex == 4 ? 'Bắt đầu' : 'Tiếp tục',
+                        style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
