@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
+import 'package:tieng_trung_123/auth/favorite_screen.dart';
 import 'package:tieng_trung_123/auth/setting_screen.dart';
 import 'package:tieng_trung_123/commons/widgets/circle_button.dart';
 import 'package:tieng_trung_123/commons/widgets/rounded_image.dart';
@@ -176,7 +177,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(FavoriteScreen.route);
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

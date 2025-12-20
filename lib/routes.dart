@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tieng_trung_123/auth/account_setting_screen.dart';
+import 'package:tieng_trung_123/auth/favorite_screen.dart';
 import 'package:tieng_trung_123/auth/forget_password_screen.dart';
+import 'package:tieng_trung_123/auth/grammar_preview.dart';
 import 'package:tieng_trung_123/auth/login_screen.dart';
 import 'package:tieng_trung_123/auth/mail_confirmation_screen.dart';
 import 'package:tieng_trung_123/auth/profile_screen.dart';
@@ -9,7 +11,9 @@ import 'package:tieng_trung_123/auth/setting_screen.dart';
 import 'package:tieng_trung_123/auth/splash_screen.dart';
 import 'package:tieng_trung_123/auth/update_password_screen.dart';
 
+import 'auth/exercise_screen.dart';
 import 'auth/onboarding_screen.dart';
+import 'models/grammar.dart';
 
 Route<dynamic>? mainRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -31,8 +35,15 @@ Route<dynamic>? mainRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => SettingScreen());
     case AccountSettingScreen.route:
       return MaterialPageRoute(builder: (context) => AccountSettingScreen());
+    case FavoriteScreen.route:
+      return MaterialPageRoute(builder: (context) => FavoriteScreen());
     case UpdatePasswordScreen.route:
       return MaterialPageRoute(builder: (context) => UpdatePasswordScreen());
+    case ExerciseScreen.route:
+      return MaterialPageRoute(builder: (context) => ExerciseScreen());
+    case GrammarPreview.route:
+      var grammar = (settings.arguments as Map<String, dynamic>)['grammar'] as Grammar;
+      return MaterialPageRoute(builder: (context) => GrammarPreview(grammar: grammar));
     default:
       return MaterialPageRoute(builder: (context) => LoginScreen());
   }

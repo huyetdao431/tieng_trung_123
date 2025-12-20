@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:tieng_trung_123/auth/account_setting_screen.dart';
 import 'package:tieng_trung_123/auth/splash_screen.dart';
@@ -7,14 +8,17 @@ import 'package:tieng_trung_123/commons/widgets/circle_button.dart';
 import 'package:tieng_trung_123/commons/widgets/image.dart';
 import 'package:tieng_trung_123/commons/widgets/rounded_image.dart';
 import 'package:tieng_trung_123/core/colors.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:tieng_trung_123/services/providers/auth_provider/auth_provider.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends ConsumerWidget {
   static const String route = 'SettingScreen';
 
   const SettingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -70,8 +74,11 @@ class SettingScreen extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.route, (Route<dynamic> route) => false);
+              onTap: () async {
+                await ref.read(authNotifierProvider.notifier).logout();
+                if (context.mounted) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(SplashScreen.route, (Route<dynamic> route) => false);
+                }
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
