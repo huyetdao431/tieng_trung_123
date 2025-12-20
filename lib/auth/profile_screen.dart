@@ -176,47 +176,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return _buildCardField(
       child: Column(
         children: [
-          GestureDetector(
+          InkWell(
             onTap: () {
               Navigator.of(context).pushNamed(FavoriteScreen.route);
             },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    image(size: 20, assetPath: 'assets/icons/star.png'),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Yêu thích',
-                      style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-                Icon(Icons.navigate_next_rounded, size: 24),
-              ],
+            child: Ink(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      image(size: 20, assetPath: 'assets/icons/star.png'),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Yêu thích',
+                        style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  Icon(Icons.navigate_next_rounded, size: 24),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
           DashedDivider(color: AppColors.neutral_200, thickness: 2),
           const SizedBox(height: 16),
-          GestureDetector(
+          InkWell(
             onTap: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    image(size: 20, assetPath: 'assets/icons/cup.png'),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Mục tiêu học tập',
-                      style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-                Icon(Icons.navigate_next_rounded, size: 24),
-              ],
+            child: Ink(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      image(size: 20, assetPath: 'assets/icons/cup.png'),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Mục tiêu học tập',
+                        style: TextStyle(color: AppColors.neutral_500, fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  Icon(Icons.navigate_next_rounded, size: 24),
+                ],
+              ),
             ),
           ),
         ],

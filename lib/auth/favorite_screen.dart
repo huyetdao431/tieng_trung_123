@@ -91,6 +91,10 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                                 decoration: BoxDecoration(
                                   color: currPageIndex == 0 ? AppColors.primary_500 : AppColors.neutral_0,
                                   borderRadius: BorderRadius.circular(96),
+                                  boxShadow: [
+                                    BoxShadow(color: AppColors.shadow, offset: Offset(3, 5)),
+                                    BoxShadow(color: Colors.black.withAlpha(13), offset: Offset(0, -4), inset: true),
+                                  ],
                                 ),
                                 child: Text(
                                   'Từ vựng',
@@ -118,6 +122,10 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                                 decoration: BoxDecoration(
                                   color: currPageIndex == 1 ? AppColors.primary_500 : AppColors.neutral_0,
                                   borderRadius: BorderRadius.circular(96),
+                                  boxShadow: [
+                                    BoxShadow(color: AppColors.shadow, offset: Offset(3, 5)),
+                                    BoxShadow(color: Colors.black.withAlpha(13), offset: Offset(0, -4), inset: true),
+                                  ],
                                 ),
                                 child: Text(
                                   'Ngữ pháp',
@@ -186,7 +194,11 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                             child: Container(
                               height: 48,
                               alignment: Alignment.center,
-                              decoration: BoxDecoration(color: AppColors.primary_500, borderRadius: BorderRadius.circular(96)),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary_500,
+                                borderRadius: BorderRadius.circular(96),
+                                boxShadow: [BoxShadow(color: Colors.black.withAlpha(13), offset: Offset(-1, -4), inset: true)],
+                              ),
                               child: Text(
                                 'Luyện tập',
                                 style: TextStyle(color: AppColors.neutral_0, fontSize: 16, fontWeight: FontWeight.w700),
@@ -201,7 +213,11 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                             child: Container(
                               height: 48,
                               alignment: Alignment.center,
-                              decoration: BoxDecoration(color: AppColors.primary_500, borderRadius: BorderRadius.circular(96)),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary_500,
+                                borderRadius: BorderRadius.circular(96),
+                                boxShadow: [BoxShadow(color: Colors.black.withAlpha(13), offset: Offset(-1, -4), inset: true)],
+                              ),
                               child: Text(
                                 'Kiểm tra',
                                 style: TextStyle(color: AppColors.neutral_0, fontSize: 16, fontWeight: FontWeight.w700),

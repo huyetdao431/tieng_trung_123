@@ -1,36 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tieng_trung_123/commons/widgets/image.dart';
 import 'package:tieng_trung_123/core/colors.dart';
 import 'package:tieng_trung_123/models/word.dart';
+import 'package:tieng_trung_123/services/providers/word_provider.dart';
 
 import '../commons/widgets/rounded_image.dart';
 
-class ExerciseScreen extends StatefulWidget {
+class ExerciseScreen extends ConsumerStatefulWidget {
   static const String route = 'ExerciseScreen';
 
   const ExerciseScreen({super.key});
 
   @override
-  State<ExerciseScreen> createState() => _ExerciseScreenState();
+  ConsumerState<ExerciseScreen> createState() => _ExerciseScreenState();
 }
 
-class _ExerciseScreenState extends State<ExerciseScreen> {
+class _ExerciseScreenState extends ConsumerState<ExerciseScreen> {
   late PageController _pageController;
   bool isShowAnswer = false;
   int currIndex = 0;
-
-  List<Word> vocabularyWords = [
-    Word(word: '你好', phonetic: 'nǐ hǎo', type: 'Thán từ', meanning: 'Xin chào'),
-    Word(word: '谢谢', phonetic: 'xiè xie', type: 'Động từ', meanning: 'Cảm ơn'),
-    Word(word: '朋友', phonetic: 'péng you', type: 'Danh từ', meanning: 'Bạn bè'),
-    Word(word: '美丽', phonetic: 'měi lì', type: 'Tính từ', meanning: 'Xinh đẹp'),
-    Word(word: '快乐', phonetic: 'kuài lè', type: 'Tính từ', meanning: 'Vui vẻ'),
-    Word(word: '喜欢', phonetic: 'xǐ huan', type: 'Động từ', meanning: 'Thích / Yêu thích'),
-    Word(word: '学习', phonetic: 'xué xí', type: 'Động từ', meanning: 'Học tập'),
-    Word(word: '工作', phonetic: 'gōng zuò', type: 'Danh từ / Động từ', meanning: 'Công việc / Làm việc'),
-    Word(word: '家庭', phonetic: 'jiā tíng', type: 'Danh từ', meanning: 'Gia đình'),
-    Word(word: '世界', phonetic: 'shì jiè', type: 'Danh từ', meanning: 'Thế giới'),
-  ];
 
   @override
   void initState() {
@@ -43,6 +32,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.sizeOf(context).width;
     double height = MediaQuery.sizeOf(context).height;
+    final wordState = ref.watch(wordNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -71,15 +61,15 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
         child: Column(
           children: [
             Container(
-              height: height / 1.66,
+              height: height / 1.6,
               width: width - 48,
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: AppColors.neutral_200),
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: vocabularyWords.length,
+                itemCount: wordState.length,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return _buildCard(screenWidth: width, screenHeight: height, word: vocabularyWords[index]);
+                  return _buildCard(screenWidth: width, screenHeight: height, word: wordState[index]);
                 },
               ),
             ),
@@ -87,7 +77,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  currIndex += currIndex < vocabularyWords.length - 1 ? 1 : 0;
+                  currIndex += currIndex < wordState.length - 1 ? 1 : 0;
                   isShowAnswer = false;
                 });
                 _pageController.jumpToPage(currIndex);
@@ -98,7 +88,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(color: AppColors.primary_500, borderRadius: BorderRadius.circular(96)),
                 child: Text(
-                  currIndex == vocabularyWords.length - 1 ? 'Kết thúc' : 'Tiếp tục',
+                  currIndex == wordState.length - 1 ? 'Kết thúc' : 'Tiếp tục',
                   style: TextStyle(color: AppColors.neutral_0, fontSize: 16, fontWeight: FontWeight.w700),
                 ),
               ),
